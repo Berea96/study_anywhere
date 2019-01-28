@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>timer</title>
+	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
+		type="text/css">
+
+	<style>
+		body {
+			margin: 40px;
+		}
+		
+		.btn-circle {
+			width: 30px;
+			height: 30px;
+			text-align: center;
+			padding: 6px 0;
+			font-size: 12px;
+			line-height: 1.428571429;
+			border-radius: 15px;
+		}
+		
+		.btn-circle.btn-lg {
+			width: 50px;
+			height: 50px;
+			padding: 10px 16px;
+			font-size: 18px;
+			line-height: 1.33;
+			border-radius: 25px;
+		}
+		
+		.btn-circle.btn-xl {
+			width: 70px;
+			height: 70px;
+			padding: 10px 16px;
+			font-size: 24px;
+			line-height: 1.33;
+			border-radius: 35px;
+		}
+		
+		input[type=text] {
+			width: 36px;
+			height: 60px;
+			text-align: right;
+			font-size: 30px;
+			font-weight: bold;
+		}
+		
+		.time {
+			font-size: 20px;
+		}
+	</style>
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	
+	<script type="text/javascript">
+		function hourIncrease() {
+			var h = $("#h");
+			var hour = Number(h.val());
+			if(hour == 9) {
+				return 9;
+			}
+			hour = hour + 1;
+			h.val(hour);
+			return hour;
+		}
+		function hourDecrease() {
+			var h = $("#h");
+			var hour = Number(h.val());
+			if(hour == 0) {
+				return 0;
+			}
+			hour = hour - 1;
+			h.val(hour);
+			return hour + 1;
+		}
+		function minuteIncrease1() {
+			var m = $("#m1");
+			var minute = Number(m.val());
+			if(minute == 5) {
+				var h = hourIncrease();
+				if(h == 9) {
+					return;
+				}
+				m.val(0);
+				return;
+			}
+			minute = minute + 1;
+			m.val(minute);
+		}
+		function minuteDecrease1() {
+			var m = $("#m1");
+			var minute = Number(m.val());
+			if(minute == 0) {
+				var h = hourDecrease();
+				if(h == 0) {
+					return 0;
+				}
+				m.val(5);
+				$("#m2").val(9);
+				return 5;
+			}
+			minute = minute - 1;
+			m.val(minute);
+		}
+		function minuteIncrease2() {
+			var m = $("#m2");
+			var minute = Number(m.val());
+			if(minute == 9) {
+				var m1 = minuteIncrease1();
+				if(m1 == 5) {
+					return;
+				}
+				m.val(0);
+				return;
+			}
+			minute = minute + 1;
+			m.val(minute);
+		}
+		function minuteDecrease2() {
+			var m = $("#m2");
+			var minute = Number(m.val());
+			if(minute == 0) {
+				var m1 = minuteDecrease1();
+				if(m1 == 0) {
+					return 0;
+				}
+				m.val(9);
+				return 9;
+			}
+			minute = minute - 1;
+			m.val(minute);
+		}
+		function secondIncrease1() {
+			var s = $("#s1");
+			var second = Number(s.val());
+			if(second == 5) {
+				var m = minuteIncrease2();
+				if(m == 9) {
+					return;
+				}
+				s.val(0);
+				return;
+			}
+			second = second + 1;
+			s.val(second);
+		}
+		function secondDecrease1() {
+			var s = $("#s1");
+			var second = Number(s.val());
+			if(second == 0) {
+				var m2 = minuteDecrease2();
+				if(m2 == 0){
+					return 0;
+				}
+				s.val(5);
+				$("#s2").val(9);
+				return 5;
+			}
+			second = second - 1;
+			s.val(second);
+		}
+		function secondIncrease2() {
+			var s = $("#s2");
+			var second = Number(s.val());
+			if(second == 9) {
+				var s1 = secondIncrease1();
+				if(s1 == 5) {
+					return;
+				}
+				s.val(0);
+				return;
+			}
+			second = second + 1;
+			s.val(second);
+		}
+		function secondDecrease2() {
+			var s = $("#s2");
+			var second = Number(s.val());
+			if(second == 0) {
+				var s1 = secondDecrease1();
+				if(s1 == 0) {
+					return;
+				}
+				s.val(9);
+				return;
+			}
+			second = second - 1;
+			s.val(second);
+		}
+		var startTimer;
+		var stopTimer;
+		var stopKey;
+		
+		startTimer = function() {
+			$("#startB").removeAttr("onclick");
+			$("#stopB").attr("onclick", "stopTimer()");
+			stopKey = setInterval(() => {
+				secondDecrease2();
+			}, 1000);
+		}
+		stopTimer = function() {
+			$("#stopB").removeAttr("onclick");
+			$("#startB").attr("onclick", "startTimer()");
+			clearInterval(stopKey);
+		}
+	</script>
+</head>
+<body>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-1">
+				<button class="btn btn-dark" name="hUP" onclick="hourIncrease()" onm="hourIncrease()">
+					<i class="fas fa-angle-up"></i>
+				</button>
+			</div>
+			<div class="col-1"></div>
+			<div class="col-1">
+				<button class="btn btn-dark" name="m1UP" onclick="minuteIncrease1()">
+					<i class="fas fa-angle-up"></i>
+				</button>
+			</div>
+			<div class="col-1">
+				<button class="btn btn-dark" name="m2UP" onclick="minuteIncrease2()">
+					<i class="fas fa-angle-up"></i>
+				</button>
+			</div>
+			<div class="col-1"></div>
+			<div class="col-1">
+				<button class="btn btn-dark" name="s1UP" onclick="secondIncrease1()">
+					<i class="fas fa-angle-up"></i>
+				</button>
+			</div>
+			<div class="col-1">
+				<button class="btn btn-dark" name="s2UP" onclick="secondIncrease2()">
+					<i class="fas fa-angle-up"></i>
+				</button>
+			</div>
+			<div class="col-1">
+				<button class="btn btn-dark" id="startB" name="start" onclick="startTimer()">
+					start
+				</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-1">
+				<input type="text" id="h" name="h" size="1" maxlength="1" value="0">
+			</div>
+			<div class="col-1">
+				<label class="time"></label>
+			</div>
+			<div class="col-1">
+				<input type="text" id="m1" name="m1" size="1" maxlength="1" value="0">
+			</div>
+			<div class="col-1">
+				<input type="text" id="m2" name="m2" size="1" maxlength="1" value="0">
+			</div>
+			<div class="col-1">
+				<label class="time"></label>
+			</div>
+			<div class="col-1">
+				<input type="text" id="s1" name="s1" size="1" maxlength="1" value="0">
+			</div>
+			<div class="col-1">
+				<input type="text" id="s2" name="s2" size="1" maxlength="1" value="0">
+			</div>
+			<div class="col-1">
+				<label class="time"></label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-1">
+				<button class="btn btn-dark" name="hDO" onclick="hourDecrease()">
+					<i class="fas fa-angle-down"></i>
+				</button>
+			</div>
+			<div class="col-1"></div>
+			<div class="col-1">
+				<button class="btn btn-dark" name="m1DO" onclick="minuteDecrease1()">
+					<i class="fas fa-angle-down"></i>
+				</button>
+			</div>
+			<div class="col-1">
+				<button class="btn btn-dark" name="m2DO" onclick="minuteDecrease2()">
+					<i class="fas fa-angle-down"></i>
+				</button>
+			</div>
+			<div class="col-1"></div>
+			<div class="col-1">
+				<button class="btn btn-dark" name="s1DO" onclick="secondDecrease1()">
+					<i class="fas fa-angle-down"></i>
+				</button>
+			</div>
+			<div class="col-1">
+				<button class="btn btn-dark" name="s2DO" onclick="secondDecrease2()">
+					<i class="fas fa-angle-down"></i>
+				</button>
+			</div>
+			<div class="col-1">
+				<button class="btn btn-dark" id="stopB" name="stop" onclick="stopTimer()">
+					stop
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<script src="vendor/jquery/jquery.min.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
