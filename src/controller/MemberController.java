@@ -241,7 +241,6 @@ public class MemberController extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			// 게시물 조회
 		}
 
 		/** 2. ActionForward 인스턴스에 따른 forwarding */
